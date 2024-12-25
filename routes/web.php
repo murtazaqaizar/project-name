@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\ValidUser;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\API\MovieApiController;
 
 // Home page
 Route::get('/', function () {
@@ -43,6 +44,13 @@ Route::get('/now-showing', [MovieController::class, 'nowShowing'])->name('now-sh
 // Search route
 Route::get('/search', [MovieController::class, 'search'])->name('search');
 
-
+Route::prefix('movies')->group(function () {
+    Route::get('/', [MovieApiController::class, 'index']);
+    Route::get('/{id}', [MovieApiController::class, 'show']);
+    Route::post('/', [MovieApiController::class, 'store']);
+    Route::put('/{id}', [MovieApiController::class, 'update']);
+    Route::delete('/{id}', [MovieApiController::class, 'destroy']);
+    Route::get('/search', [MovieApiController::class, 'search']);
+});
 // Authentication routes
 require __DIR__.'/auth.php';
